@@ -1,11 +1,13 @@
 ![](poster.png)
-# Quiz Service
+# RESTful Quiz Service
 * Login and Registering System
 * Users can create quizzes and upload an image to the quiz
-* Users can add questions to quizzes
-* Other users can take a quiz and answer the questions
+* Users can add questions to their own quizzes
+* Users can modify and delete their own quizzes
+* Other users can take a quizzes from other users and answer the questions
 * Users cannot take a quiz more than once
 * Users can see the score they got after taking a quiz
+* The web services is RESTful
 
 ## Admins
 * Admins can delete and edit any user, quiz and questions

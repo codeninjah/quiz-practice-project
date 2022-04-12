@@ -27,3 +27,4 @@ Create a seeder that creates users, quizzes and questions to make it easier to t
 * Add so users can upload an image to questions
 * Add a simple user interface using Vanilla JS or VueJS# quiz-practice-project
 # quiz-practice-project
+# quiz-practice-project

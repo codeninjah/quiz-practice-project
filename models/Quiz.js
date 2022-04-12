@@ -13,7 +13,17 @@ Quiz.init(
             type: DataTypes.TEXT,
             allowNull: false
         },
-        imageLink: DataTypes.TEXT
+        imageLink: DataTypes.TEXT,
+        quOne: DataTypes.TEXT,
+        anOne: DataTypes.TEXT,
+        quTwo: DataTypes.TEXT,
+        anTwo: DataTypes.TEXT,
+        quThree: DataTypes.TEXT,
+        anThree: DataTypes.TEXT,
+        quFour: DataTypes.TEXT,
+        anFour: DataTypes.TEXT,
+        quFive: DataTypes.TEXT,
+        anFive: DataTypes.TEXT,
     }, { sequelize}
 )
 

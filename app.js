@@ -94,16 +94,32 @@ app.get('/', (req,res) => {
 
   app.post('/quizes', async(req, res) => {
       if(req.session.user){
-        const {quizName} = req.body
+        const {quizName, qOne, aOne, qTwo, aTwo, qThree, aThree, qFour, aFour, qFive, aFive} = req.body
         const quiz = await Quiz.findOne({where: {name: quizName}})
         if(!quiz){
             const newQuiz = await Quiz.create({name: quizName})
-            const quizes = await Quiz.findAll()
-            res.render('quizes', {quizes})
+            newQuiz.set({
+                quOne: qOne,
+                anOne: aOne,
+                quTwo: qTwo,
+                anTwo: aTwo,
+                quThree: qThree,
+                anThree: aThree,
+                quFour: qFour,
+                anFour: aFour,
+                quFive: qFive,
+                anFive: aFive
+            })
+
+            await newQuiz.save()
         }
         else{
-            res.render("A quiz with that name already exists")
+            const quizes = await Quiz.findAll()
+            res.render('quizes', {quizes})
+            res.send("A quiz with that name already exists")
         }
+        const quizes = await Quiz.findAll()
+        res.render('quizes', {quizes})
       }
       else{
           res.redirect('/')

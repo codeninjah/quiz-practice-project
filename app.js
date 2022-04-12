@@ -26,7 +26,12 @@ app.get('/', (req,res) => {
   })
   
   app.get('/dashboard', (req,res) => {
-    res.render('dashboard', {user: req.session.user})
+    if(req.session.user){
+        res.render('dashboard', {user: req.session.user})
+    }
+    else{
+        res.redirect('/')
+    }
   })
   
   app.post('/register', async (req,res) => {
@@ -78,8 +83,13 @@ app.get('/', (req,res) => {
   })
 
   app.get('/quizes', async(req, res) => {
-      const quizes = await Quiz.findAll()
-      res.render('quizes', {quizes})
+      if(req.session.user){
+        const quizes = await Quiz.findAll()
+        res.render('quizes', {quizes})
+    }
+    else{
+        res.redirect('/')
+    }
   })
   
   User.sync().then( () => {

@@ -91,6 +91,24 @@ app.get('/', (req,res) => {
         res.redirect('/')
     }
   })
+
+  app.post('/quizes', async(req, res) => {
+      if(req.session.user){
+        const {quizName} = req.body
+        const quiz = await Quiz.findOne({where: {name: quizName}})
+        if(!quiz){
+            const newQuiz = await Quiz.create({name: quizName})
+            const quizes = await Quiz.findAll()
+            res.render('quizes', {quizes})
+        }
+        else{
+            res.render("A quiz with that name already exists")
+        }
+      }
+      else{
+          res.redirect('/')
+      }
+  })
   
   User.sync().then( () => {
     PORT || 5000

@@ -24,7 +24,12 @@
             <option value="fifteen">Fifteen questions</option>
         </select>
 
+    <form action="/quizes" method="POST">
         <article></article>
+        <h3>Quiz name</h3>
+        <input type="text" name="quizName" placeholder="quiz-name">
+        <button>Create quiz</button>
+    </form>
 
     <script>
         let number = document.getElementById('numQuestions').value
@@ -96,9 +101,5 @@
         */
     </script>
 
-    <form>
-        <input type="text" name="quiz-name">
-        <button>Create quiz</button>
-    </form>
 </body>
 </html>

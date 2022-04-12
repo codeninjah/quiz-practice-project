@@ -1,0 +1,26 @@
+{
+  "name": "practice-project",
+  "version": "1.0.0",
+  "description": "![](poster.png) # RESTful Quiz Service * Login and Registering System * Users can create quizzes and upload an image to the quiz * Users can add questions to their own quizzes * Users can modify and delete their own quizzes * Other users can take a quizzes from other users and answer the questions * Users cannot take a quiz more than once * Users can see the score they got after taking a quiz * The web services is RESTful",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeninjah/practice-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/codeninjah/practice-project/issues"
+  },
+  "homepage": "https://github.com/codeninjah/practice-project#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "sequelize": "^6.18.0"
+  }
+}

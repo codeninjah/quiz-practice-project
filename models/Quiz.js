@@ -14,7 +14,7 @@ Quiz.init(
             allowNull: false
         },
         imageLink: DataTypes.TEXT
-    }
+    }, { sequelize}
 )
 
 module.exports = Quiz

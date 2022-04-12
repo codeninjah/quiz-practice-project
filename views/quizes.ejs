@@ -9,6 +9,10 @@
 <body>
     <h1>Here are your quizes</h1>
 
+    <% for(let quiz of quizes){%>
+        <%= quiz.name %>
+    <%}%>
+
     <h5>Create new quiz</h5>
     <form>
         <input type="text" name="quiz-name">

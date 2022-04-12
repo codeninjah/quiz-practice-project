@@ -1,6 +1,6 @@
 const express = require('express')
 require('dotenv').config()
-const {User} = require('./models')
+const {User, Quiz} = require('./models')
 const session = require('cookie-session')
 
 const app = express()
@@ -77,8 +77,9 @@ app.get('/', (req,res) => {
     res.redirect('/')
   })
 
-  app.get('/quizes', (req, res) => {
-      res.render('quizes')
+  app.get('/quizes', async(req, res) => {
+      const quizes = await Quiz.findAll()
+      res.render('quizes', {quizes})
   })
   
   User.sync().then( () => {

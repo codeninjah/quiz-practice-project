@@ -19,8 +19,11 @@
   "homepage": "https://github.com/codeninjah/practice-project#readme",
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "cookie-session": "^2.0.0",
     "dotenv": "^16.0.0",
+    "ejs": "^3.1.6",
     "express": "^4.17.3",
-    "sequelize": "^6.18.0"
+    "sequelize": "^6.18.0",
+    "sqlite3": "^5.0.2"
   }
 }

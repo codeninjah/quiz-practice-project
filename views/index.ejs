@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login System</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="wrapper">
+    <div class="form-container">
+      <h1>Login</h1>
+      <% if(errorMessage){ %>
+        <p class="error"><%= errorMessage %></p>
+      <% } %>
+      <form action="/login" method="POST">
+        <input type="text" name="username" placeholder="Enter your username">
+        <input type="text" name="password" placeholder="Enter your password">
+        <button>Login</button>
+      </form>
+      <a href="/register">Don't have an account? Register one!</a>
+
+    </div>
+  </div>
+</body>
+</html>

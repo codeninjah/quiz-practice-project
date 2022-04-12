@@ -16,6 +16,86 @@
     <%}%>
 
     <h2>Create new quiz</h2>
+
+    <label for="numberOfQuestions">Choose the number of questions:</label>
+        <select name="numberOfQuestions" id="numQuestions">
+            <option value="five">Five questions</option>
+            <option value="ten">Ten questions</option>
+            <option value="fifteen">Fifteen questions</option>
+        </select>
+
+        <article></article>
+
+    <script>
+        let number = document.getElementById('numQuestions').value
+
+        switch(number){
+            case "five":
+            document.getElementsByTagName('article')[0].innerHTML = 
+                '<input type="text" name="question-one" placeholder="First question">' +
+                '<input type="text" name="question-two" placeholder="Second question">' +
+                '<input type="text" name="question-three" placeholder="Third question">' +
+                '<input type="text" name="question-four" placeholder="Fourth question">' +
+                '<input type="text" name="question-five" placeholder="Fifth question">'
+            break;
+            case 'ten':
+            document.getElementsByTagName('article')[0].innerHTML = 
+                '<input type="text" name="question-one" placeholder="First question">' +
+                '<input type="text" name="question-two" placeholder="Second question">' +
+                '<input type="text" name="question-three" placeholder="Third question">' +
+                '<input type="text" name="question-four" placeholder="Fourth question">' +
+                '<input type="text" name="question-five" placeholder="Fifth question">' +
+                '<input type="text" name="question-six" placeholder="Sixth question">' +
+                '<input type="text" name="question-seven" placeholder="Seventh question">' +
+                '<input type="text" name="question-eight" placeholder="Eighth question">' +
+                '<input type="text" name="question-nine" placeholder="Ninth question">' +
+                '<input type="text" name="question-ten" placeholder="Tenth question">'
+            break;
+            case 'fifteen':
+            document.getElementsByTagName('article')[0].innerHTML = 
+                '<input type="text" name="question-one" placeholder="First question">' +
+                '<input type="text" name="question-two" placeholder="Second question">' +
+                '<input type="text" name="question-three" placeholder="Third question">' +
+                '<input type="text" name="question-four" placeholder="Fourth question">' +
+                '<input type="text" name="question-five" placeholder="Fifth question">' +
+                '<input type="text" name="question-six" placeholder="Sixth question">' +
+                '<input type="text" name="question-seven" placeholder="Seventh question">' +
+                '<input type="text" name="question-eight" placeholder="Eighth question">' +
+                '<input type="text" name="question-nine" placeholder="Ninth question">' +
+                '<input type="text" name="question-ten" placeholder="Tenth question">' +
+                '<input type="text" name="question-eleven" placeholder="Eleventh question">' +
+                '<input type="text" name="question-twelve" placeholder="Twelfth question">' +
+                '<input type="text" name="question-thirteen" placeholder="Thirteenth question">' +
+                '<input type="text" name="question-fourteen" placeholder="Fourteenth question">' +
+                '<input type="text" name="question-fifteen" placeholder="Fifteenth question">'
+        }
+
+        function onchange(){
+            window.location.reload();
+        }
+
+        document.getElementById('numQuestions').addEventListener('change', onchange)
+
+        /*
+        document.getElementsByTagName('article')[0].innerHTML = 
+        '<input type="text" name="question-one" placeholder="First question">' +
+        '<input type="text" name="question-two" placeholder="Second question">' +
+        '<input type="text" name="question-three" placeholder="Third question">' +
+        '<input type="text" name="question-four" placeholder="Fourth question">' +
+        '<input type="text" name="question-five" placeholder="Fifth question">' +
+        '<input type="text" name="question-six" placeholder="Sixth question">' +
+        '<input type="text" name="question-seven" placeholder="Seventh question">' +
+        '<input type="text" name="question-eight" placeholder="Eighth question">' +
+        '<input type="text" name="question-nine" placeholder="Ninth question">' +
+        '<input type="text" name="question-ten" placeholder="Tenth question">' +
+        '<input type="text" name="question-eleven" placeholder="Eleventh question">' +
+        '<input type="text" name="question-twelve" placeholder="Twelfth question">' +
+        '<input type="text" name="question-thirteen" placeholder="Thirteenth question">' +
+        '<input type="text" name="question-fourteen" placeholder="Fourteenth question">' +
+        '<input type="text" name="question-fifteen" placeholder="Fifteenth question">'
+        */
+    </script>
+
     <form>
         <input type="text" name="quiz-name">
         <button>Create quiz</button>

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize')
 const setupUser = require('./User')
+const Quiz = require('./Quiz')
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
@@ -8,4 +9,4 @@ const sequelize = new Sequelize({
 
 const User = setupUser(sequelize)
 
-module.exports = { User }
+module.exports = { User, Quiz }

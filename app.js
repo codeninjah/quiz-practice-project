@@ -25,8 +25,8 @@ app.get('/', (req,res) => {
     res.render('register')
   })
   
-  app.get('/welcome', (req,res) => {
-    res.render('welcome', {user: req.session.user})
+  app.get('/dashboard', (req,res) => {
+    res.render('dashboard', {user: req.session.user})
   })
   
   app.post('/register', async (req,res) => {
@@ -41,7 +41,7 @@ app.get('/', (req,res) => {
       id: user.id
     }
   
-    res.redirect('/welcome')
+    res.redirect('/dashboard')
   })
   
   
@@ -58,7 +58,7 @@ app.get('/', (req,res) => {
         username: user.username,
         id: user.id
       }
-      res.redirect('/welcome')
+      res.redirect('/dashboard')
     }catch(error){
       req.session.errorMessage = error.message
       res.redirect('/')
@@ -75,6 +75,10 @@ app.get('/', (req,res) => {
   app.post('/logout', (req,res) => {
     req.session = null
     res.redirect('/')
+  })
+
+  app.get('/quizes', (req, res) => {
+      res.render('quizes')
   })
   
   User.sync().then( () => {

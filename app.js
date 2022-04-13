@@ -91,6 +91,13 @@ app.get('/', (req,res) => {
     }
   })
 
+
+  app.get('/:id', async(req, res) => {
+    const quiz = await Quiz.findOne({where: {id: req.params.id}})
+    res.send("You've made it!" + quiz.name)
+  })
+
+
   app.post('/quizes', async(req, res) => {
       if(req.session.user){
         const {quizName, qOne, aOne, qTwo, aTwo, qThree, aThree, qFour, aFour, qFive, aFive} = req.body

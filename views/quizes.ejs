@@ -24,19 +24,13 @@
     <h1>Your quizes:</h1>
         <ul>
         <% for(let quiz of myQuizes){%>
-            <li><a href=""><%= quiz.name %></a></li>
+            <% let id = quiz.id %>
+            <li><a href=<%=quiz.id%>><%= quiz.name %></a></li>
         <%}%>
         </ul>
     </div>
 
     <h2>Create new quiz</h2>
-
-    <label for="numberOfQuestions">Choose the number of questions:</label>
-        <select name="numberOfQuestions" id="numQuestions">
-            <option value="five">Five questions</option>
-            <option value="ten">Ten questions</option>
-            <option value="fifteen">Fifteen questions</option>
-        </select>
 
     <form action="/quizes" method="POST">
         <article>

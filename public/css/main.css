@@ -42,3 +42,7 @@ body,html,.wrapper{
   ul {
     list-style-type:square;
   }
+
+  input[type=text] {
+    width: 300px;
+  }

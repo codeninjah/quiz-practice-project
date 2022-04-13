@@ -15,7 +15,7 @@
         <h1>Here are all quizes</h1>
         <ul>
         <% for(let quiz of quizes){%>
-                <li><%= quiz.name %> Id är: <%= quiz.id %> Question one: <%= quiz.quOne %> Answer one is: <%= quiz.anOne %></li>
+                <li><a href=/quiz/<%=quiz.id%>><%= quiz.name %> Id är: <%= quiz.id %> Question one: <%= quiz.quOne %> Answer one is: <%= quiz.anOne %></a></li>
         <%}%>
         </ul>
     </div>
@@ -24,7 +24,6 @@
     <h1>Your quizes:</h1>
         <ul>
         <% for(let quiz of myQuizes){%>
-            <% let id = quiz.id %>
             <li><a href=/quiz/<%=quiz.id%>><%= quiz.name %></a></li>
         <%}%>
         </ul>

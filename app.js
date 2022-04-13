@@ -96,6 +96,7 @@ app.get('/', (req,res) => {
       if(req.session.user){
         const {quizName, qOne, aOne, qTwo, aTwo, qThree, aThree, qFour, aFour, qFive, aFive} = req.body
         const quiz = await Quiz.findOne({where: {name: quizName}})
+        const user = await User.findOne({where: {username: req.session.user.username}})
         if(!quiz){
             const newQuiz = await Quiz.create({name: quizName})
             newQuiz.set({
@@ -108,9 +109,11 @@ app.get('/', (req,res) => {
                 quFour: qFour,
                 anFour: aFour,
                 quFive: qFive,
-                anFive: aFive
+                anFive: aFive,
+                user_id: user.user_id
             })
-
+            console.log("User_id is: " + req.session.user.user_id)
+            console.log("User id is: " + req.session.user.id)
             await newQuiz.save()
         }
         else{

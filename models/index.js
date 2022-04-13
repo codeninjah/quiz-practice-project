@@ -9,4 +9,7 @@ const sequelize = new Sequelize({
 
 const User = setupUser(sequelize)
 
+User.hasMany( Quiz, {foreignKey:'user_id'})
+Quiz.belongsTo( Quiz )
+
 module.exports = { User, Quiz }

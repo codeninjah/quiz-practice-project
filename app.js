@@ -92,9 +92,9 @@ app.get('/', (req,res) => {
   })
 
 
-  app.get('/:id', async(req, res) => {
+  app.get('/quiz/:id', async(req, res) => {
     const quiz = await Quiz.findOne({where: {id: req.params.id}})
-    res.send("You've made it!" + quiz.name)
+    res.render('quiz', {quiz})
   })
 
 

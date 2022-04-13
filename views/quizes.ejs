@@ -25,7 +25,7 @@
         <ul>
         <% for(let quiz of myQuizes){%>
             <% let id = quiz.id %>
-            <li><a href=<%=quiz.id%>><%= quiz.name %></a></li>
+            <li><a href=/quiz/<%=quiz.id%>><%= quiz.name %></a></li>
         <%}%>
         </ul>
     </div>

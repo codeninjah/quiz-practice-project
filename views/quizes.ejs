@@ -5,20 +5,29 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-    <h1>Here are all quizes</h1>
 
-    <% for(let quiz of quizes){%>
-        <article>
-            <%= quiz.name %> Id är: <%= quiz.id %> Question one: <%= quiz.quOne %> Answer one is: <%= quiz.anOne %>
-        </article>
-    <%}%>
+    <div class="wrapper">
 
+    <div class="quizes">
+        <h1>Here are all quizes</h1>
+        <ul>
+        <% for(let quiz of quizes){%>
+                <li><%= quiz.name %> Id är: <%= quiz.id %> Question one: <%= quiz.quOne %> Answer one is: <%= quiz.anOne %></li>
+        <%}%>
+        </ul>
+    </div>
+
+    <div class="my-quizes">
     <h1>Your quizes:</h1>
-    <% for(let quiz of myQuizes){%>
-        <%= quiz.name %>
-    <%}%>
+        <ul>
+        <% for(let quiz of myQuizes){%>
+            <li><a href=""><%= quiz.name %></a></li>
+        <%}%>
+        </ul>
+    </div>
 
     <h2>Create new quiz</h2>
 
@@ -60,82 +69,6 @@
         <button>Create quiz</button>
     </form>
 
-    
-    <script>
-        /* Scrappar koden nedan
-        let number = document.getElementById('numQuestions').value
-        let array = []
-
-        let articleValue = document.getElementsByTagName('article')[0]
-
-
-        switch(number){
-            case "five":
-            document.getElementsByTagName('article')[0].innerHTML = 
-                '<input type="text" name="question-one" placeholder="First question">' +
-                '<input type="text" name="question-two" placeholder="Second question">' +
-                '<input type="text" name="question-three" placeholder="Third question">' +
-                '<input type="text" name="question-four" placeholder="Fourth question">' +
-                '<input type="text" name="question-five" placeholder="Fifth question">'
-            break;
-            case 'ten':
-            array.push(document.getElementsByTagName('article')[0].innerHTML = 
-                '<input type="text" name="question-one" placeholder="First question">' +
-                '<input type="text" name="question-two" placeholder="Second question">' +
-                '<input type="text" name="question-three" placeholder="Third question">' +
-                '<input type="text" name="question-four" placeholder="Fourth question">' +
-                '<input type="text" name="question-five" placeholder="Fifth question">' +
-                '<input type="text" name="question-six" placeholder="Sixth question">' +
-                '<input type="text" name="question-seven" placeholder="Seventh question">' +
-                '<input type="text" name="question-eight" placeholder="Eighth question">' +
-                '<input type="text" name="question-nine" placeholder="Ninth question">' +
-                '<input type="text" name="question-ten" placeholder="Tenth question">')
-            break;
-            case 'fifteen':
-            array.push(document.getElementsByTagName('article')[0].innerHTML = 
-                '<input type="text" name="question-one" placeholder="First question">' +
-                '<input type="text" name="question-two" placeholder="Second question">' +
-                '<input type="text" name="question-three" placeholder="Third question">' +
-                '<input type="text" name="question-four" placeholder="Fourth question">' +
-                '<input type="text" name="question-five" placeholder="Fifth question">' +
-                '<input type="text" name="question-six" placeholder="Sixth question">' +
-                '<input type="text" name="question-seven" placeholder="Seventh question">' +
-                '<input type="text" name="question-eight" placeholder="Eighth question">' +
-                '<input type="text" name="question-nine" placeholder="Ninth question">' +
-                '<input type="text" name="question-ten" placeholder="Tenth question">' +
-                '<input type="text" name="question-eleven" placeholder="Eleventh question">' +
-                '<input type="text" name="question-twelve" placeholder="Twelfth question">' +
-                '<input type="text" name="question-thirteen" placeholder="Thirteenth question">' +
-                '<input type="text" name="question-fourteen" placeholder="Fourteenth question">' +
-                '<input type="text" name="question-fifteen" placeholder="Fifteenth question">')
-        }
-
-        function onchange(){
-            window.location.reload();
-        }
-
-        document.getElementById('numQuestions').addEventListener('change', onchange)
-        console.log(array)
-
-        /*
-        document.getElementsByTagName('article')[0].innerHTML = 
-        '<input type="text" name="question-one" placeholder="First question">' +
-        '<input type="text" name="question-two" placeholder="Second question">' +
-        '<input type="text" name="question-three" placeholder="Third question">' +
-        '<input type="text" name="question-four" placeholder="Fourth question">' +
-        '<input type="text" name="question-five" placeholder="Fifth question">' +
-        '<input type="text" name="question-six" placeholder="Sixth question">' +
-        '<input type="text" name="question-seven" placeholder="Seventh question">' +
-        '<input type="text" name="question-eight" placeholder="Eighth question">' +
-        '<input type="text" name="question-nine" placeholder="Ninth question">' +
-        '<input type="text" name="question-ten" placeholder="Tenth question">' +
-        '<input type="text" name="question-eleven" placeholder="Eleventh question">' +
-        '<input type="text" name="question-twelve" placeholder="Twelfth question">' +
-        '<input type="text" name="question-thirteen" placeholder="Thirteenth question">' +
-        '<input type="text" name="question-fourteen" placeholder="Fourteenth question">' +
-        '<input type="text" name="question-fifteen" placeholder="Fifteenth question">'
-        */
-    </script>
-
+    </div>
 </body>
 </html>

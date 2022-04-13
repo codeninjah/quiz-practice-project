@@ -2,6 +2,7 @@ const express = require('express')
 require('dotenv').config()
 const {User, Quiz} = require('./models')
 const session = require('cookie-session')
+const { Op } = require('sequelize')
 
 const app = express()
 const PORT = process.env.PORT
@@ -84,8 +85,11 @@ app.get('/', (req,res) => {
 
   app.get('/quizes', async(req, res) => {
       if(req.session.user){
-        const quizes = await Quiz.findAll()
-        res.render('quizes', {quizes})
+        const user = await User.findOne({where: {username: req.session.user.username}})
+        const quizes = await Quiz.findAll({ where: {user_id: {[Op.ne] : user.user_id}}})
+        //res.render('quizes', {quizes})
+        const myQuizes = await Quiz.findAll({where: {user_id: user.user_id}})
+        res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
     }
     else{
         res.redirect('/')
@@ -112,17 +116,16 @@ app.get('/', (req,res) => {
                 anFive: aFive,
                 user_id: user.user_id
             })
-            console.log("User_id is: " + req.session.user.user_id)
-            console.log("User id is: " + req.session.user.id)
             await newQuiz.save()
         }
         else{
             const quizes = await Quiz.findAll()
-            res.render('quizes', {quizes})
             res.send("A quiz with that name already exists")
         }
-        const quizes = await Quiz.findAll()
-        res.render('quizes', {quizes})
+        const quizes = await Quiz.findAll({ where: {user_id: {[Op.ne] : user.user_id}}})
+        const myQuizes = await Quiz.findAll({where: {user_id: user.user_id}})
+        //res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
+        res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
       }
       else{
           res.redirect('/')

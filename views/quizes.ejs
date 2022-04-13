@@ -7,12 +7,17 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Here are your quizes</h1>
+    <h1>Here are all quizes</h1>
 
     <% for(let quiz of quizes){%>
         <article>
             <%= quiz.name %> Id är: <%= quiz.id %> Question one: <%= quiz.quOne %> Answer one is: <%= quiz.anOne %>
         </article>
+    <%}%>
+
+    <h1>Your quizes:</h1>
+    <% for(let quiz of myQuizes){%>
+        <%= quiz.name %>
     <%}%>
 
     <h2>Create new quiz</h2>

@@ -93,8 +93,13 @@ app.get('/', (req,res) => {
 
 
   app.get('/quiz/:id', async(req, res) => {
-    const quiz = await Quiz.findOne({where: {id: req.params.id}})
-    res.render('quiz', {quiz})
+    if(req.session.user){
+      const quiz = await Quiz.findOne({where: {id: req.params.id}})
+      res.render('quiz', {quiz})
+    }
+    else{
+      res.redirect('/')
+    }
   })
 
 

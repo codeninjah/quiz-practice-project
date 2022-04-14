@@ -18,19 +18,19 @@
     <p><%= quiz.id %></p>
     <p>Fråga 1: <%= quiz.quOne %></p>
     <p class="participant-answer"><input type="text" id="aOne"></p>
-    <p class="hidden-answer">Rätt svar: <%= quiz.anOne %></p>
+    <p class="hidden-answer">Rätt svar: <span><%= quiz.anOne %></span></p>
     <p>Fråga 2: <%= quiz.quTwo %></p>
     <p class="participant-answer"><input type="text" id="aTwo"></p>
-    <p class="hidden-answer">Rätt svar: <%= quiz.anTwo %></p>
+    <p class="hidden-answer">Rätt svar: <span><%= quiz.anTwo %></span></p>
     <p>Fråga 3: <%= quiz.quThree %></p>
     <p class="participant-answer"><input type="text" id="aThree"></p>
-    <p class="hidden-answer">Rätt svar: <%= quiz.anThree %></p>
+    <p class="hidden-answer">Rätt svar: <span><%= quiz.anThree %></span></p>
     <p>Fråga 4: <%= quiz.quFour %></p>
     <p class="participant-answer"><input type="text" id="aFour"></p>
-    <p class="hidden-answer">Rätt svar: <%= quiz.anFour %></p>
+    <p class="hidden-answer">Rätt svar: <span><%= quiz.anFour %></span></p>
     <p>Fråga 5: <%= quiz.quFive %></p>
     <p class="participant-answer"><input type="text" id="aFive"></p>
-    <p class="hidden-answer">Amerika</p>
+    <p class="hidden-answer">Rätt svar: <span></s><%= quiz.anFive %></span></p>
     <button> Submit answers </button>
   </div>
 
@@ -66,16 +66,23 @@
     }
 
     function compareAnswers(){
-      console.log("Red")
+      console.log("Red") //Outputs
       
-      var rightAnswers = document.getElementsByClassName('hidden-answer')
-      var participantAnswers = document.getElementsByClassName('participant-answer')
+      var rightAnswers = document.getElementsByTagName('span')
+      //var participantAnswers = document.getElementsByClassName('participant-answer')
+      var participantAnswers = document.querySelectorAll("input[type=text]")
 
       for(let i = 0; i < rightAnswers.length; i++){
-        if(rightAnswers[i].textContent == participantAnswers[i].value){
+        console.log("Blue") //Outputs
+
+        if(rightAnswers[i].innerText === participantAnswers[i].value){
           rightAnswers[i].style.color = "green";
           console.log("Green")
-      }
+        }
+        else{
+          rightAnswers[i].style.color = "red";
+        }
+
     }
     
   }

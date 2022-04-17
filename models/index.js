@@ -10,6 +10,6 @@ const sequelize = new Sequelize({
 const User = setupUser(sequelize)
 
 User.hasMany( Quiz, {foreignKey:'user_id'})
-Quiz.belongsTo( Quiz )
+Quiz.belongsTo( User )
 
 module.exports = { User, Quiz }

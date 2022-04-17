@@ -31,12 +31,25 @@
     <p>Fråga 5: <%= quiz.quFive %></p>
     <p class="participant-answer"><input type="text" id="aFive"></p>
     <p class="hidden-answer">Rätt svar: <span></s><%= quiz.anFive %></span></p>
-    <button> Submit answers </button>
+
+    <form action=/quiz/<%=quiz.id%> method="POST">
+      <input type="hidden" name="userScore" value="">
+      <button> Submit answers </button>
+      <p class="score"></p>
+    </form>
+
   </div>
+
 
   <script>
 
     var btn = document.getElementsByTagName('button')[0]
+    var scoreP = document.getElementsByClassName('score')[0]
+
+    var hidden = document.querySelectorAll("input[type=hidden]")[0]
+
+    let score = 0;
+    //scoreP.innerText = score
 
     btn.addEventListener('click', checkLengthofAnswers)
     //btn.addEventListener('click', compareAnswers)
@@ -66,17 +79,18 @@
     }
 
     function compareAnswers(){
-      console.log("Red") //Outputs
       
       var rightAnswers = document.getElementsByTagName('span')
       //var participantAnswers = document.getElementsByClassName('participant-answer')
       var participantAnswers = document.querySelectorAll("input[type=text]")
 
+      score = 0
+
       for(let i = 0; i < rightAnswers.length; i++){
-        console.log("Blue") //Outputs
 
         if(rightAnswers[i].innerText === participantAnswers[i].value){
           rightAnswers[i].style.color = "green";
+          score += 10
           console.log("Green")
         }
         else{
@@ -84,7 +98,8 @@
         }
 
     }
-    
+    scoreP.innerText = score
+    hidden.value = encode(score)
   }
     
 

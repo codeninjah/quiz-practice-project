@@ -30,6 +30,9 @@ module.exports = database => {
                 type: DataTypes.TEXT,
                 allowNull: false
             },
+            quiz_id: {
+                type: DataTypes.JSON,
+            }
         },
         {
             sequelize: database,

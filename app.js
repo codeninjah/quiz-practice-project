@@ -102,6 +102,22 @@ app.get('/', (req,res) => {
     }
   })
 
+  app.post('/quiz/:id', async(req, res) => {
+    if(req.session.user){
+      const { userScore } = req.body
+      const quizId = req.params.id
+      const user = await User.findOne({where: {username: req.session.user.username}})
+      user.quiz_id = quizId
+      await user.save()
+
+      console.log("Score is: " + userScore  + " And quiz was added to user" + quizId)
+      res.send("Your score was: " + userScore + " And quiz was added to user" + quizId)
+    }
+    else {
+      res.redirect("/")
+    }
+  })
+
 
   app.post('/quizes', async(req, res) => {
       if(req.session.user){

@@ -33,7 +33,7 @@
     <p class="hidden-answer">Rätt svar: <span></s><%= quiz.anFive %></span></p>
 
     <form action=/quiz/<%=quiz.id%> method="POST">
-      <input type="hidden" name="userScore" value="">
+      <input type="hidden" name="userScore" value=<%= score %>>
       <button> Submit answers </button>
       <p class="score"></p>
     </form>
@@ -48,7 +48,7 @@
 
     var hidden = document.querySelectorAll("input[type=hidden]")[0]
 
-    let score = 0;
+    let score = '<%- score %>'
     //scoreP.innerText = score
 
     btn.addEventListener('click', checkLengthofAnswers)
@@ -99,7 +99,7 @@
 
     }
     scoreP.innerText = score
-    hidden.value = encode(score)
+    hidden.innerText = score
   }
     
 

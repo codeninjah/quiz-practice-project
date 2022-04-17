@@ -107,7 +107,7 @@ app.get('/', (req,res) => {
       const { userScore } = req.body
       const quizId = req.params.id
       const user = await User.findOne({where: {username: req.session.user.username}})
-      user.quiz_id = quizId
+      user.quiz_id += quizId
       await user.save()
 
       console.log("Score is: " + userScore  + " And quiz was added to user" + quizId)

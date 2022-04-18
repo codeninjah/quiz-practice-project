@@ -95,8 +95,8 @@ app.get('/', (req,res) => {
   app.get('/quiz/:id', async(req, res) => {
     if(req.session.user){
       const quiz = await Quiz.findOne({where: {id: req.params.id}})
-      let score = 0
-      res.render('quiz', {quiz, score: score})
+      //let score = 0
+      res.render('quiz', {quiz})
     }
     else{
       res.redirect('/')
@@ -112,7 +112,7 @@ app.get('/', (req,res) => {
       await user.save()
 
       console.log("Score is: " + userScore  + " And quiz was added: " + quizId)
-      res.send("Your score was: " + userScore + " And quiz was added: " + quizId)
+      //res.send("Your score was: " + userScore + " And quiz was added: " + quizId)
     }
     else {
       res.redirect("/")
@@ -148,9 +148,9 @@ app.get('/', (req,res) => {
         }
         const quizes = await Quiz.findAll({ where: {user_id: {[Op.ne] : user.user_id}}})
         const myQuizes = await Quiz.findAll({where: {user_id: user.user_id}})
-        let score = 0
+        //let score = 0
         //res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
-        res.render('quizes', {quizes: quizes, myQuizes: myQuizes, score: score})
+        res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
       }
       else{
           res.redirect('/')

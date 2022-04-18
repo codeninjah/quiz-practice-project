@@ -16,6 +16,7 @@
   <div class="wrapper">
     <p><%= quiz.name %> </p>
     <p><%= quiz.id %></p>
+    <% let userScore = 0 %>
     <p>Fråga 1: <%= quiz.quOne %></p>
     <p class="participant-answer"><input type="text" id="aOne"></p>
     <p class="hidden-answer">Rätt svar: <span><%= quiz.anOne %></span></p>
@@ -33,7 +34,7 @@
     <p class="hidden-answer">Rätt svar: <span></s><%= quiz.anFive %></span></p>
 
     <form action=/quiz/<%=quiz.id%> method="POST">
-      <input type="hidden" name="userScore" value=<%= score %>>
+      <input type="hidden" name="userScore" value="<%= userScore %>">
       <button> Submit answers </button>
       <p class="score"></p>
     </form>
@@ -46,9 +47,7 @@
     var btn = document.getElementsByTagName('button')[0]
     var scoreP = document.getElementsByClassName('score')[0]
 
-    var hidden = document.querySelectorAll("input[type=hidden]")[0]
-
-    let score = '<%- score %>'
+    //var hidden = document.querySelectorAll("input[type=hidden]")[0]
     //scoreP.innerText = score
 
     btn.addEventListener('click', checkLengthofAnswers)
@@ -99,7 +98,7 @@
 
     }
     scoreP.innerText = score
-    hidden.innerText = score
+    //hidden.innerText = score
   }
     
 

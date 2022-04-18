@@ -3,6 +3,8 @@ require('dotenv').config()
 const {User, Quiz} = require('./models')
 const session = require('cookie-session')
 const { Op } = require('sequelize')
+const fileUpload = require('express-fileupload')
+//const path = require("path");
 
 const app = express()
 const PORT = process.env.PORT
@@ -13,6 +15,8 @@ app.use( session({
     name: 'session',
     keys: [process.env.SESSION_SECRET]
   }))
+app.use(fileUpload())
+
 
 app.set('view engine', 'ejs')
 
@@ -109,7 +113,9 @@ app.get('/', (req,res) => {
       else{
         res.send("Quiz already taken. You cannot take the same quiz twice")
         console.log("Quiz already taken")
-    }
+        console.log("Req session " + req.session)
+        console.log("Max age is: " + req.session.cookie)
+      }
     }
     else{
       res.redirect('/')
@@ -173,6 +179,36 @@ app.get('/', (req,res) => {
           res.redirect('/')
       }
   })
+
+
+  //Experiments with express-fileupload 
+   app.post('/upload', (req, res) => {
+    let sampleFile;
+    let uploadPath;
+  
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).send('No files were uploaded.');
+    }
+  
+    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
+    sampleFile = req.files.sampleFile;
+    uploadPath = './uploads/' + sampleFile.name;
+  
+    // Use the mv() method to place the file somewhere on your server
+    sampleFile.mv(uploadPath, function(err) {
+      if (err)
+        return res.status(500).send(err);
+  
+      res.send('File uploaded!');
+    });
+  });
+
+
+  app.get('/upload', (req, res) => {
+    res.render('upload')
+  }) 
+
+
   
   User.sync().then( () => {
     PORT || 5000

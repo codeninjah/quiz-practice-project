@@ -31,7 +31,8 @@ module.exports = database => {
                 allowNull: false
             },
             quiz_id: {
-                type: DataTypes.JSON,
+                type: DataTypes.TEXT,
+                defaultValue: '0',
             }
         },
         {

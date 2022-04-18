@@ -92,15 +92,32 @@ app.get('/', (req,res) => {
   })
 
 
-  app.get('/quiz/:id', async(req, res) => {
+  app.get('/quiz/:id', async(req, res, next) => {
+    try{
     if(req.session.user){
       const quiz = await Quiz.findOne({where: {id: req.params.id}})
       //let score = 0
-      res.render('quiz', {quiz})
+      //const userQuiz = req.session.user.quiz_id
+      const user = await User.findOne({where: {username: req.session.user.username}})
+
+      const userQuiz = await user.quiz_id
+      console.log(userQuiz)
+
+      if(!userQuiz.includes(quiz.id) || !userQuiz){
+        res.render('quiz', {quiz})
+      }
+      else{
+        res.send("Quiz already taken. You cannot take the same quiz twice")
+        console.log("Quiz already taken")
+    }
     }
     else{
       res.redirect('/')
     }
+  }
+  catch(err) {
+    next(err)
+  }
   })
 
   app.post('/quiz/:id', async(req, res) => {

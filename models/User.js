@@ -29,6 +29,10 @@ module.exports = database => {
             password_hash: {
                 type: DataTypes.TEXT,
                 allowNull: false
+            },
+            quiz_id: {
+                type: DataTypes.TEXT,
+                defaultValue: '0',
             }
         },
         {

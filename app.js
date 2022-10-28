@@ -96,6 +96,7 @@ app.get('/', (req,res) => {
   })
 
 
+  //Need to work with this 
   app.get('/quiz/:id', async(req, res, next) => {
     try{
     if(req.session.user){
@@ -107,9 +108,11 @@ app.get('/', (req,res) => {
       const userQuiz = await user.quiz_id
       console.log(userQuiz)
 
-      if(!userQuiz.includes(quiz.id) || !userQuiz){
+      
+      if(userQuiz.includes(quiz.id) || userQuiz){
         res.render('quiz', {quiz})
       }
+      
       else{
         res.send("Quiz already taken. You cannot take the same quiz twice")
         console.log("Quiz already taken")

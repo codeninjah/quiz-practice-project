@@ -15,7 +15,7 @@ app.use( session({
     name: 'session',
     keys: [process.env.SESSION_SECRET]
   }))
-app.use(fileUpload())
+app.use(fileUpload({useTempFiles: true}))
 
 
 app.set('view engine', 'ejs')

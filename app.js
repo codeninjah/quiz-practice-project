@@ -1,134 +1,151 @@
 const express = require('express')
+const bodyParser = require('body-parser');
 require('dotenv').config()
 const {User, Quiz} = require('./models')
 const session = require('cookie-session')
 const { Op } = require('sequelize')
-const fileUpload = require('express-fileupload')
-//const path = require("path");
+
+const fs = require('fs');
+const path = require("path");
+const multer = require("multer");
 
 const app = express()
 const PORT = process.env.PORT
 
 app.use( express.static('public') )
 app.use( express.urlencoded( { extended: true } ) )
+app.use(bodyParser.json());
 app.use( session({
     name: 'session',
     keys: [process.env.SESSION_SECRET]
   }))
-app.use(fileUpload({useTempFiles: true}))
 
 
+app.set("views", path.join(__dirname, "views"));
 app.set('view engine', 'ejs')
 
+
+// Serve static files from the 'photos' directory
+// Without the following, the /gallery endpoint won't work
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+let score = 0;
+
+// Default enpoint
 app.get('/', (req,res) => {
     const errorMessage = req.session.errorMessage
     req.session.errorMessage = null
     res.render('index', {errorMessage})
   })
   
-  app.get('/register', (req,res) => {
-    res.render('register')
-  })
+
+// The register view
+app.get('/register', (req,res) => {
+   res.render('register')
+})
   
-  app.get('/dashboard', (req,res) => {
-    if(req.session.user){
-        res.render('dashboard', {user: req.session.user})
-    }
-    else{
-        res.redirect('/')
-    }
-  })
+// The dashboard view
+app.get('/dashboard', (req,res) => {
+   if(req.session.user){
+       res.render('dashboard', {user: req.session.user})
+   }
+   else{
+       res.redirect('/')
+   }
+})
   
-  app.post('/register', async (req,res) => {
-    const {username, password} = req.body  
-    const user = await User.create({
-      username, 
-      password_hash: password
-    })
+// The register endpoint
+app.post('/register', async (req,res) => {
+   const {username, password} = req.body  
+   const user = await User.create({
+     username, 
+     password_hash: password
+  })
     
-    req.session.user = {
-      username: user.username,
-      id: user.id
-    }
+   req.session.user = {
+     username: user.username,
+     id: user.id
+  }
   
-    res.redirect('/dashboard')
-  })
+  res.redirect('/dashboard')
+})
   
-  
-  app.post('/login', async (req,res) => {
-    try{
-      const {username, password} = req.body
-      const user = await User.authenticate(username, password)
-      req.session.user = {
-        username: user.username,
-        id: user.id
-      }
-      res.redirect('/dashboard')
-    }catch(error){
-      req.session.errorMessage = error.message
-      res.redirect('/')
-    }
-  })
-  
-  // app.get('/error', (req,res) => {
-  //   const errorMessage = req.session.errorMessage
-  //   req.session.errorMessage = null
-  //   res.render('error', {errorMessage})
-  // })
-  
-  
-  app.post('/logout', (req,res) => {
-    req.session = null
-    res.redirect('/')
-  })
 
-  app.get('/quizes', async(req, res) => {
-      if(req.session.user){
-        const user = await User.findOne({where: {username: req.session.user.username}})
-        const quizes = await Quiz.findAll({ where: {user_id: {[Op.ne] : user.user_id}}})
-        //res.render('quizes', {quizes})
-        const myQuizes = await Quiz.findAll({where: {user_id: user.user_id}})
-        res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
+// The login endpoint
+app.post('/login', async (req,res) => {
+  try{
+     const {username, password} = req.body
+     const user = await User.authenticate(username, password)
+     req.session.user = {
+       username: user.username,
+       id: user.id
     }
-    else{
-        res.redirect('/')
-    }
-  })
+     res.redirect('/dashboard')
+  }catch(error){
+     req.session.errorMessage = error.message
+     res.redirect('/')
+   }
+})
+  
+
+// The logout endpoint 
+app.post('/logout', (req,res) => {
+   req.session = null
+   res.redirect('/')
+})
 
 
-  //Need to work with this 
-  app.get('/quiz/:id', async(req, res, next) => {
-    try{
+// The quizes endpoint
+app.get('/quizes', async(req, res) => {
     if(req.session.user){
-      const quiz = await Quiz.findOne({where: {id: req.params.id}})
-      //let score = 0
-      //const userQuiz = req.session.user.quiz_id
       const user = await User.findOne({where: {username: req.session.user.username}})
-
-      const userQuiz = await user.quiz_id
-      console.log(userQuiz)
-
-      
-      if(userQuiz.includes(quiz.id) || userQuiz){
-        res.render('quiz', {quiz})
-      }
-      
-      else{
-        res.send("Quiz already taken. You cannot take the same quiz twice")
-        console.log("Quiz already taken")
-        console.log("Req session " + req.session)
-        console.log("Max age is: " + req.session.cookie)
-      }
-    }
-    else{
+      const quizes = await Quiz.findAll({ where: {user_id: {[Op.ne] : user.user_id}}})
+      //res.render('quizes', {quizes})
+      const myQuizes = await Quiz.findAll({where: {user_id: user.user_id}})
+      res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
+  }
+  else{
       res.redirect('/')
-    }
-  }
-  catch(err) {
-    next(err)
-  }
-  })
+   }
+})
 
+
+  // Need to work with this 
+  // As of now implementing not being able to take the same quiz twice does not work
+app.get('/quiz/:id', async(req, res, next) => {
+  try{
+   if(req.session.user){
+     const quiz = await Quiz.findOne({where: {id: req.params.id}})
+     //let score = 0
+     //const userQuiz = req.session.user.quiz_id
+     const user = await User.findOne({where: {username: req.session.user.username}})
+
+     const userQuiz = await user.quiz_id
+     console.log(userQuiz)
+     
+    if(userQuiz.includes(quiz.id) || userQuiz){
+       res.render('quiz', {quiz})
+    }
+      
+    else{
+      res.send("Quiz already taken. You cannot take the same quiz twice")
+      console.log("Quiz already taken")
+      console.log("Req session " + req.session)
+      console.log("Max age is: " + req.session.cookie)
+    }
+   }
+  else{
+     res.redirect('/')
+   }
+ }
+ catch(err) {
+  next(err)
+ }
+})
+
+  // I don't think this is working
+  // Commenting it for now
+  /*
   app.post('/quiz/:id', async(req, res) => {
     if(req.session.user){
       const { userScore } = req.body
@@ -144,78 +161,155 @@ app.get('/', (req,res) => {
       res.redirect("/")
     }
   })
+  */
 
-
-  app.post('/quizes', async(req, res) => {
-      if(req.session.user){
-        const {quizName, qOne, aOne, qTwo, aTwo, qThree, aThree, qFour, aFour, qFive, aFive} = req.body
-        const quiz = await Quiz.findOne({where: {name: quizName}})
-        const user = await User.findOne({where: {username: req.session.user.username}})
-        if(!quiz){
-            const newQuiz = await Quiz.create({name: quizName})
-            newQuiz.set({
-                quOne: qOne,
-                anOne: aOne,
-                quTwo: qTwo,
-                anTwo: aTwo,
-                quThree: qThree,
-                anThree: aThree,
-                quFour: qFour,
-                anFour: aFour,
-                quFive: qFive,
-                anFive: aFive,
-                user_id: user.user_id
-            })
-            await newQuiz.save()
-        }
-        else{
-            const quizes = await Quiz.findAll()
-            res.send("A quiz with that name already exists")
-        }
-        const quizes = await Quiz.findAll({ where: {user_id: {[Op.ne] : user.user_id}}})
-        const myQuizes = await Quiz.findAll({where: {user_id: user.user_id}})
-        //let score = 0
-        //res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
-        res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
+// Using the quizes endpoint to create quizes
+app.post('/quizes', async(req, res) => {
+   if(req.session.user){
+      const {quizName, qOne, aOne, qTwo, aTwo, qThree, aThree, qFour, aFour, qFive, aFive} = req.body
+      const quiz = await Quiz.findOne({where: {name: quizName}})
+      const user = await User.findOne({where: {username: req.session.user.username}})
+      if(!quiz){
+         const newQuiz = await Quiz.create({name: quizName})
+          newQuiz.set({
+             quOne: qOne,
+             anOne: aOne,
+             quTwo: qTwo,
+             anTwo: aTwo,
+             quThree: qThree,
+             anThree: aThree,
+             quFour: qFour,
+             anFour: aFour,
+             quFive: qFive,
+             anFive: aFive,
+             user_id: user.user_id
+         })
+           await newQuiz.save()
+       }
+       else{
+          const quizes = await Quiz.findAll()
+          res.send("A quiz with that name already exists")
       }
-      else{
-          res.redirect('/')
-      }
-  })
-
-
-  //Experiments with express-fileupload 
-   app.post('/upload', (req, res) => {
-    let sampleFile;
-    let uploadPath;
-  
-    if (!req.files || Object.keys(req.files).length === 0) {
-      return res.status(400).send('No files were uploaded.');
+      const quizes = await Quiz.findAll({ where: {user_id: {[Op.ne] : user.user_id}}})
+      const myQuizes = await Quiz.findAll({where: {user_id: user.user_id}})
+      //let score = 0
+      //res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
+      res.render('quizes', {quizes: quizes, myQuizes: myQuizes})
     }
-  
-    // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
-    sampleFile = req.files.sampleFile;
-    uploadPath = './uploads/' + sampleFile.name;
-  
-    // Use the mv() method to place the file somewhere on your server
-    sampleFile.mv(uploadPath, function(err) {
-      if (err)
-        return res.status(500).send(err);
-  
-      res.send('File uploaded!');
-    });
+    else{
+       res.redirect('/')
+    }
+ })
+
+// Experimenting with posting the quiz score
+app.post('/update-score', async(req, res) => {
+  const user = await User.findOne({where: {username: req.session.user.username}})
+  const score = req.body.score
+
+  console.log(`Score: ${score}`)
+
+  // Handle the data
+  //res.send(`Score: ${score}`);
+  res.json({ score: score });
+  user.user_score = score;
+  //res.redirect('/dashboard'); // Need to redirect to the right quiz
+})
+
+
+//////////////////////////////////////
+//////////////////////////////////////
+// Here comes the code for multer
+// This will allow to use the following functions to upload pictures
+// var upload = multer({ dest: "Upload_folder_name" })
+// If you do not want to use diskStorage then uncomment it
+
+var storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		// Uploads is the Upload_folder_name
+		cb(null, "uploads");
+	},
+	filename: function (req, file, cb) {
+		// cb(null, file.fieldname + "-" + Date.now() + ".jpg"); //the original code
+        cb(null, file.originalname)
+	},
+});
+
+
+// Define the maximum size for uploading
+// picture i.e. 1 MB. it is optional
+const maxSize = 15 * 1000 * 1000; // The firsy number is the size in MB
+
+var upload = multer({
+	storage: storage,
+	limits: { fileSize: maxSize },
+	fileFilter: function (req, file, cb) {
+		// Set the filetypes, it is optional
+		var filetypes = /jpeg|jpg|png/;
+		var mimetype = filetypes.test(file.mimetype);
+
+		var extname = filetypes.test(
+			path.extname(file.originalname).toLowerCase()
+		);
+
+		if (mimetype && extname) {
+			return cb(null, true);
+		}
+
+		cb(
+			"Error: File upload only supports the " +
+				"following filetypes - " +
+				filetypes
+		);
+	},
+
+	// mypic is the name of file attribute
+}).single("mypic");
+
+
+
+app.get("/uploadStuff", (req, res, next) => {
+  res.render("uploadStuff");
+});
+
+
+app.post("/uploadPicture", function (req, res, next) {
+   // Error MiddleWare for multer file upload, so if any
+   // error occurs, the image would not be uploaded!
+    upload(req, res, function (err) {
+           if (err) {
+               // ERROR occurred (here it can be occurred due
+               // to uploading image of size greater than
+               // 1MB or uploading different file type)
+               console.log(err);
+               res.send(err);
+               //return res.status(500).json({ error: err.message });
+            } else {
+               // SUCCESS, image successfully uploaded
+               res.send("Success, Image uploaded!");
+              }
+        });
   });
 
 
-  app.get('/upload', (req, res) => {
-    res.render('upload')
-  }) 
+
+// Route handler to render the pictures uploaded
+app.get('/gallery', (req, res) => {
+  // Read the contents of the directory
+  fs.readdir("./uploads", (err, files) => {
+      if (err) {
+          console.error('Error reading directory:', err);
+          return res.status(500).send('Internal Server Error');
+      }
+      // Render the EJS template and pass the list of files
+      res.render('gallery', { files });
+  });
+});
 
 
   
-  User.sync().then( () => {
-    PORT || 5000
-    app.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT}`)
-    })
+User.sync().then( () => {
+  PORT || 5000
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`)
   })
+})

@@ -16,11 +16,13 @@ User.sync()
     return User.bulkCreate([
         {
             username: 'Alex',
-            password_hash: hashUserOne
+            password_hash: hashUserOne,
+            user_score: 0,
         },
         {
             username: 'Steph',
             password_hash: hashUserTwo,
+            user_score: 0,
         },
     ])
 }, {sequelize})

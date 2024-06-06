@@ -33,7 +33,11 @@ module.exports = database => {
             quiz_id: {
                 type: DataTypes.TEXT,
                 defaultValue: '0',
-            }
+            },
+            user_score: {
+                type: DataTypes.INTEGER,
+                defaultValue: 0,
+            },
         },
         {
             sequelize: database,

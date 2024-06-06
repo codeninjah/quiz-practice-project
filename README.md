@@ -28,3 +28,24 @@ Use one of the following packages to handle file uploads from the client
 * ~~Add a simple user interface using Vanilla JS or VueJS# quiz-practice-project~~
 # quiz-practice-project
 # quiz-practice-project
+
+
+## Instructions on how to set up and get this project running
+1. Run the command `npm install`
+2. Create a .env file with the following variables:
+USER_ONE_PASSWORD
+USER_TWO_PASSWORD
+PORT
+SESSION_SECRET
+And assign values to them
+3. Open the terminal window and run `node db/setup.js` and `node db/seed.js`
+4. You should now be able to run the project with `node app.js`
+
+
+
+## TODO
+1. I need to complete adding the user score to the database.
+2. Also I should reimplement the restriction to complete the same quiz more than once.
+3. The fileupload function is in a very early stage, that will also need work
+4. A better UI
+5. Suggestions?

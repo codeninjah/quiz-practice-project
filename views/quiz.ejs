@@ -16,42 +16,49 @@
   <div class="wrapper">
     <p><%= quiz.name %> </p>
     <p><%= quiz.id %></p>
-    <% let userScore = 0 %>
+    <% let score = 0 %>
     <p>Fråga 1: <%= quiz.quOne %></p>
+    <p>Svar på fråga 1: <%= quiz.anOne %></p>
     <p class="participant-answer"><input type="text" id="aOne"></p>
-    <p class="hidden-answer">Rätt svar: <span><%= quiz.anOne %></span></p>
+    <p class="hidden-answer">Rätt svar: <span class="right-answer"><%= quiz.anOne %></span></p>
     <p>Fråga 2: <%= quiz.quTwo %></p>
     <p class="participant-answer"><input type="text" id="aTwo"></p>
-    <p class="hidden-answer">Rätt svar: <span><%= quiz.anTwo %></span></p>
+    <p class="hidden-answer">Rätt svar: <span class="right-answer"><%= quiz.anTwo %></span></p>
     <p>Fråga 3: <%= quiz.quThree %></p>
     <p class="participant-answer"><input type="text" id="aThree"></p>
-    <p class="hidden-answer">Rätt svar: <span><%= quiz.anThree %></span></p>
+    <p class="hidden-answer">Rätt svar: <span class="right-answer"><%= quiz.anThree %></span></p>
     <p>Fråga 4: <%= quiz.quFour %></p>
     <p class="participant-answer"><input type="text" id="aFour"></p>
-    <p class="hidden-answer">Rätt svar: <span><%= quiz.anFour %></span></p>
+    <p class="hidden-answer">Rätt svar: <span class="right-answer"><%= quiz.anFour %></span></p>
     <p>Fråga 5: <%= quiz.quFive %></p>
     <p class="participant-answer"><input type="text" id="aFive"></p>
-    <p class="hidden-answer">Rätt svar: <span></s><%= quiz.anFive %></span></p>
+    <p class="hidden-answer">Rätt svar: <span class="right-answer"><%= quiz.anFive %></span></p>
 
-    <form action=/quiz/<%=quiz.id%> method="POST">
-      <input type="hidden" name="userScore" value="<%= userScore %>">
+    <!--
+      Below I am working on implementing the score system to database
+    -->
+    <!--
+    <form action="/submit-score" method="POST">
+      <input type="hidden" name="score" value="<%= score %>">
       <button> Submit answers </button>
       <p class="score"></p>
     </form>
+  -->
+
+  <form id="score-form">
+      <label for="score">Score:</label>
+      <p id="score" name="score" value="<%= score %>" required></p>
+      <button type="button">Submit</button>
+  </form>
 
   </div>
 
-
   <script>
-
     var btn = document.getElementsByTagName('button')[0]
-    var scoreP = document.getElementsByClassName('score')[0]
-
-    //var hidden = document.querySelectorAll("input[type=hidden]")[0]
-    //scoreP.innerText = score
+    var scoreP = document.getElementById('score')
+    let score = 0;
 
     btn.addEventListener('click', checkLengthofAnswers)
-    //btn.addEventListener('click', compareAnswers)
 
     function changeVisibility() {
       var elements = document.getElementsByClassName('hidden-answer')
@@ -77,32 +84,45 @@
       }
     }
 
-    function compareAnswers(){
-      
-      var rightAnswers = document.getElementsByTagName('span')
-      //var participantAnswers = document.getElementsByClassName('participant-answer')
-      var participantAnswers = document.querySelectorAll("input[type=text]")
+  function compareAnswers(){
+     var rightAnswers = document.getElementsByClassName('right-answer')
+     var participantAnswers = document.querySelectorAll("input[type=text]")
 
-      score = 0
+     for(let i = 0; i < rightAnswers.length; i++){
+       console.log(`Right answer is ${rightAnswers[i].value}`);
+       console.log(`Participant answer is ${participantAnswers[i].value}`);
 
-      for(let i = 0; i < rightAnswers.length; i++){
+       if(rightAnswers[i].innerText === participantAnswers[i].value){
+         rightAnswers[i].style.color = "green";
+         score += 10
+         console.log("Green")
+       }
+       else {
+         rightAnswers[i].style.color = "red";
+       }
 
-        if(rightAnswers[i].innerText === participantAnswers[i].value){
-          rightAnswers[i].style.color = "green";
-          score += 10
-          console.log("Green")
+   }
+   scoreP.innerText = "Your score was: " + score
+   submitScore(score)
+ }
+
+  // It should handle the score back to backend
+  function submitScore(userScore) {
+            score = userScore
+            fetch('/update-score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ score: score })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('score').innerText = data.score;
+            })
+            .catch(error => console.error('Error:', error));
         }
-        else{
-          rightAnswers[i].style.color = "red";
-        }
-
-    }
-    scoreP.innerText = "Your score was: " + score
-    //hidden.innerText = score
-  }
     
-
   </script>
-
 </body>
 </html>

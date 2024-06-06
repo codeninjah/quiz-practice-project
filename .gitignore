@@ -2,3 +2,5 @@ node_modules
 db/dbfile.sqlite
 .env
 uploads
+middleware
+tmp
